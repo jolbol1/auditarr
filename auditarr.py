@@ -50,7 +50,7 @@ def auditPlex(radarrdb, plexdb, libraryid):
 def getPlexFolders(plexdb):
     plexFoldersAr = []
     plexDB = sqlite3.connect(plexdb)
-    plexFolders = plexDB.execute("SELECT path FROM directories WHERE library_section_id='1'")
+    plexFolders = plexDB.execute("SELECT path FROM directories WHERE id IN (SELECT directory_id FROM media_parts WHERE media_item_id IN (SELECT id FROM media_items WHERE library_section_id='1'))")
     log.debug(plexFolders)
     for row in plexFolders:
         log.debug(row[0])
