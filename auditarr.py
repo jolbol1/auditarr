@@ -3,6 +3,8 @@ import sys
 import datetime
 import argparse
 import logging as log
+from datetime import datetime
+
 
 # Set up the arguments for the app
 parser = argparse.ArgumentParser()
@@ -37,19 +39,24 @@ def Diff(li1, li2):
 
 # Function to get the folders as seen by plex and radarr, compare them and report the difference
 def auditPlex(radarrdb, plexdb, libraryid='1'):
+    now = datetime.now().strftime("%H:%M:%S")
+    log.info(now + " Auditarr: Starting new audit...")
     radarrFolders = getRadarrFolders(args.radarrdb)
     plexFolders = getPlexFolders(args.plexdb, libraryid)
     difference = Diff(radarrFolders, plexFolders)
     # Output difference to user
-    log.info("Difference:")
-    for item in difference:
-        if item in radarrFolders:
-            log.info(item + " from Radarr database")
-            continue;
-        elif item in plexFolders:
-            log.info(item + " from Plex database")
-        else:
-            log.info(item)
+    if len(difference) is 0:
+        log.info("No differences to report")    
+    else:
+        log.info("Difference:")
+        for item in difference:
+            if item in radarrFolders:
+                log.info(item + " from Radarr database")
+                continue;
+            elif item in plexFolders:
+                log.info(item + " from Plex database")
+            else:
+                log.info(item)
 
 # Get the folders from the PlexDB
 def getPlexFolders(plexdb, libraryid):
