@@ -24,4 +24,6 @@ Where:
 ---
 From time to time a file got corrupted on my server and radarr wouldnt care but plex would. This meant that the Movie Files figure reported by radarr was different to the amount of movies on plex. I created this to easily locate the file that was causing the issue.
 
+Further, I have also found it useful to run periodically as sometimes my plex scanner has not picked up a new media item.
+
 
