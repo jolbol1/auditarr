@@ -13,9 +13,9 @@ parser.add_argument(dest="plexdb",
                     type=str)
 parser.add_argument("-library", "--library", "--library-id",
                     dest="libraryid",
-                    choices=['append', 'sync'],
                     help="Sync mode, can be 'append' or 'sync'. Refer to PAC wiki for more details",
-                    type=str)
+                    type=str,
+                    default='1')
 parser.add_argument("-v", "--verbose",
                     action = "store_true",
                     dest="verbose",
@@ -36,7 +36,7 @@ def Diff(li1, li2):
 
 def auditPlex(radarrdb, plexdb, libraryid):
     radarrFolders = getRadarrFolders(args.radarrdb)
-    plexFolders = getPlexFolders(args.plexdb)
+    plexFolders = getPlexFolders(args.plexdb, libraryid)
     difference = Diff(radarrFolders, plexFolders)
     log.info("Difference:")
     for item in difference:
@@ -47,10 +47,12 @@ def auditPlex(radarrdb, plexdb, libraryid):
         else:
             log.info(item)
 
-def getPlexFolders(plexdb):
+def getPlexFolders(plexdb, libraryid):
     plexFoldersAr = []
     plexDB = sqlite3.connect(plexdb)
-    plexFolders = plexDB.execute("SELECT path FROM directories WHERE id IN (SELECT directory_id FROM media_parts WHERE media_item_id IN (SELECT id FROM media_items WHERE library_section_id='1'))")
+    searchMethod = "SELECT path FROM directories WHERE id IN (SELECT directory_id FROM media_parts WHERE media_item_id IN (SELECT id FROM media_items WHERE library_section_id='{}'))".format(libraryid)
+    print(searchMethod)
+    plexFolders = plexDB.execute(searchMethod)
     log.debug(plexFolders)
     for row in plexFolders:
         log.debug(row[0])
