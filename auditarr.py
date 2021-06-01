@@ -41,9 +41,10 @@ def auditPlex(radarrdb, plexdb, libraryid):
     log.info("Difference:")
     for item in difference:
         if item in radarrFolders:
-            log.info(item + "from Radarr")
-        if item in plexFolders:
-            log.info(item + "from Plex")
+            log.info(item + " from Radarr database")
+            continue;
+        elif item in plexFolders:
+            log.info(item + " from Plex database")
         else:
             log.info(item)
 
