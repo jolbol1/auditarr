@@ -17,7 +17,7 @@ Where:
 
 
 ### Example Usage with Library ID and Paths
-`pyhton3 auditarr.py -library 1 /opt/radarr/radarr.db '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db'`
+`python3 auditarr.py -library 1 /opt/radarr/radarr.db '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db'`
 
 
 ## Why?
